@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>La vida de Adriancin</title>
+<style>
+  :root {
+    --bg:#0b1020; --panel:#111a35; --text:#e6ecff; --muted:#b8c0e0; --accent:#7c9cf5;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  .wrap { min-height:100svh; display:flex; flex-direction:column; align-items:center; gap:16px; padding:16px; }
+  header { width:100%; max-width:960px; padding:24px 24px 0; }
+  header h1 { margin:0; font-size:clamp(24px, 3vw, 32px); font-weight:800; letter-spacing:.2px; }
+  header p { margin:6px 0 0; color:var(--muted); }
+  .viewer { width:100%; max-width:960px; background:var(--panel); border-radius:16px; box-shadow:0 12px 40px #0004; padding:24px; }
+  .media-row { display:grid; grid-template-columns: 1fr; gap:16px; align-items:start; }
+  @media (min-width: 720px) { .media-row { grid-template-columns: 1fr 1fr; } }
+  .frame { position:relative; border-radius:12px; overflow:hidden; }
+  .frame img, .frame video { display:block; width:100%; max-height:320px; object-fit:cover; background:#000; }
+  .arrow { position:absolute; top:50%; transform:translateY(-50%); padding:4px 8px; font-size:28px; line-height:1; color:white; background:transparent; border:none; cursor:pointer; user-select:none; }
+  .arrow:focus { outline:2px dashed #fff6; outline-offset:2px; }
+  .arrow.left { left:8px; }
+  .arrow.right { right:8px; }
+  .desc { color:var(--muted); border-top:1px solid #ffffff22; padding-top:12px; }
+  @media (min-width: 720px) { .desc { border-top:none; border-left:1px solid #ffffff22; padding:0 0 0 16px; } }
+  .dots { display:flex; justify-content:center; gap:8px; padding-top:16px; }
+  .dot { width:8px; height:8px; border-radius:999px; background:#ffffff80; border:none; cursor:pointer; }
+  .dot.active { width:28px; background:white; }
+  footer { width:100%; max-width:960px; background:var(--panel); border-radius:16px; box-shadow:0 8px 30px #0003; padding:20px; margin-bottom:12px; }
+  .ct-row { display:flex; flex-direction:column; gap:10px; }
+  .ct-item { display:flex; align-items:center; gap:10px; color:var(--muted); }
+  .ct-item a { color:var(--accent); text-decoration:none; }
+  .ct-item a:hover { text-decoration:underline; }
+  svg { width:20px; height:20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>La vida de Adriancin</h1>
+    <p>Esta es una colección de momentos de la vida de Adrian</p>
+  </header>
+
+  <section class="viewer" aria-label="Álbum de fotos y video">
+    <div class="media-row">
+      <div class="frame">
+        <button class="arrow left" aria-label="Anterior" id="btn-prev">←</button>
+        <div id="media-slot"></div>
+        <button class="arrow right" aria-label="Siguiente" id="btn-next">→</button>
+      </div>
+      <figcaption class="desc" id="desc">Descripción.</figcaption>
+    </div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <footer>
+    <h2 style="margin:0 0 10px 0;">Contacto</h2>
+    <div class="ct-row">
+      <div class="ct-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M3 7l9 6 9-6M5 19h14a2 2 0 0 0 2-2V7"/></svg>
+        <a href="mailto:carloscarmona4554@gmail.com">carloscarmona4554@gmail.com</a>
+      </div>
+      <div class="ct-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm4.25 4a4.25 4.25 0 100 8.5 4.25 4.25 0 000-8.5z"/></svg>
+        <a href="https://instagram.com/calz0nfuerte" target="_blank" rel="noopener noreferrer">@calz0nfuerte</a>
+      </div>
+      <div class="ct-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.4 7.86 10.94.58.11.79-.25.79-.56v-2c-3.2.7-3.87-1.54-3.87-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.74.08-.72.08-.72 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.26 3.4.96.11-.75.4-1.26.72-1.55-2.55-.29-5.23-1.27-5.23-5.65 0-1.25.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.1 11.1 0 015.8 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.84 1.19 3.09 0 4.39-2.68 5.36-5.24 5.65.41.36.77 1.08.77 2.18v3.23c0 .31.21.67.79.56A10.51 10.51 0 0023.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+        <a href="https://github.com/Calz0n" target="_blank" rel="noopener noreferrer">github.com/Calz0n</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const items = [
+    {src:"assets/intro.mp4", desc:"Video de bienvenida", type:"video"},
+    {src:"assets/foto1.jpg", desc:"Un apretón de manos en la oficina", type:"image"},
+    {src:"assets/foto2.jpg", desc:"Entrando al salón con carpetas", type:"image"},
+    {src:"assets/foto3.jpg", desc:"Posando junto a un póster en la calle", type:"image"},
+    {src:"assets/foto4.jpg", desc:"Concentrado frente a la computadora", type:"image"},
+    {src:"assets/foto5.jpg", desc:"Una noche de abrazos con un unicornio", type:"image"},
+    {src:"assets/foto6.jpg", desc:"Un recuerdo en el aula", type:"image"},
+    {src:"assets/foto7.jpg", desc:"En Burger King disfrutando un refresco", type:"image"},
+    {src:"assets/foto8.jpg", desc:"Recuerdo de la infancia", type:"image"},
+    {src:"assets/foto9.jpg", desc:"Con un regalo en las manos", type:"image"},
+    {src:"assets/foto10.jpg", desc:"Con un mural motivador", type:"image"},
+    {src:"assets/foto11.jpg", desc:"Contemplando el mar", type:"image"},
+    {src:"assets/foto12.jpg", desc:"Recuerdos divertidos en la UV", type:"image"},
+    {src:"assets/foto13.jpg", desc:"Un retrato serio en blanco y negro", type:"image"}
+  ];
+
+  let index = 0;
+  const slot = document.getElementById('media-slot');
+  const desc = document.getElementById('desc');
+  const dots = document.getElementById('dots');
+
+  function renderDots(){
+    dots.innerHTML = '';
+    items.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'dot' + (i===index ? ' active' : '');
+      b.setAttribute('aria-label','Ir a elemento ' + (i+1));
+      b.onclick = () => { index = i; render(); };
+      dots.appendChild(b);
+    });
+  }
+
+  function render(){
+    const it = items[index];
+    slot.innerHTML = '';
+    if(!it) return;
+    if (it.type === 'video') {
+      const v = document.createElement('video');
+      v.src = it.src;
+      v.autoplay = true; v.loop = true; v.muted = true; v.playsInline = true; v.controls = true;
+      slot.appendChild(v);
+    } else {
+      const img = document.createElement('img');
+      img.src = it.src; img.alt = it.desc || 'Foto';
+      img.draggable = false;
+      slot.appendChild(img);
+    }
+    desc.textContent = it.desc || '';
+    renderDots();
+  }
+
+  function go(dir){ index = (index + dir + items.length) % items.length; render(); }
+  document.getElementById('btn-prev').onclick = () => go(-1);
+  document.getElementById('btn-next').onclick = () => go(1);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') go(-1);
+    if (e.key === 'ArrowRight') go(1);
+  });
+
+  let startX = null;
+  slot.addEventListener('touchstart', e => { if(e.touches[0]) startX = e.touches[0].clientX; }, {passive:true});
+  slot.addEventListener('touchend', e => {
+    if (startX == null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    startX = null;
+  });
+
+  render();
+</script>
+</body>
+</html>
